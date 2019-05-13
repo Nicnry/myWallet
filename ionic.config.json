@@ -1,5 +1,7 @@
 {
   "name": "myWallet",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
