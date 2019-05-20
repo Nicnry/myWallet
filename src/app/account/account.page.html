@@ -10,4 +10,16 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item *ngFor="let account of accounts">
+      {{account.name}}
+    </ion-item>
+  </ion-list>
+  <form (ngSubmit)="addAccount()">
+    <ion-item>
+      <ion-label position="floating">Ajouter</ion-label>
+      <ion-input type="text" [(ngModel)]="account" name="account" required></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="dark" type="submit" end>Ajouter compte</ion-button>
+  </form>
 </ion-content>

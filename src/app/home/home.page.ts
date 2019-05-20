@@ -15,6 +15,10 @@ export class HomePage {
     
   }
 
+  public setTransaction() {
+    return true;
+  }
+
 
 
 }

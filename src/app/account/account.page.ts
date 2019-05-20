@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Account } from '../model/account';
+import { Storage } from '@ionic/storage';
+import { DataProvider } from '../providers/data';
 
 @Component({
   selector: 'app-account',
@@ -6,10 +9,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./account.page.scss'],
 })
 export class AccountPage implements OnInit {
+  public data: DataProvider;
+  public accounts: Array<Account> = [];
+  public account;
 
-  constructor() { }
+  constructor(private storage: Storage) {
+    this.data = new DataProvider(storage);
+    this.getDataAccounts();
+  }
 
   ngOnInit() {
   }
+
+  public addAccount() {
+    this.data.setAccount(new Account(1, this.account, false, 0, []));
+    this.account = '';
+  }
+
+  public getDataAccounts() {
+    this.data.getAccounts().then((accounts) => {
+      if (accounts) {
+        accounts.forEach(account => {
+          this.accounts.push({
+            id: account.id,
+            name: account.name,
+            favorite: account.favorite,
+            value: account.value,
+            transactions: account.transactions,
+          });
+        });
+      }
+    });
+  }
+
 
 }
