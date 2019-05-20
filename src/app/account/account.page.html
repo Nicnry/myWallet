@@ -12,7 +12,9 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let account of accounts">
-      {{account.name}}
+      <ion-label color="dark" [routerLink]="['/account/', account.id]">{{account.name}}</ion-label>
+      <ion-label color="dark">{{account.value}}</ion-label>
+      <ion-icon *ngIf="!account.favorite" name="star-outline"></ion-icon>
     </ion-item>
   </ion-list>
   <form (ngSubmit)="addAccount()">

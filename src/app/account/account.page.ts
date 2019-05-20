@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../model/account';
 import { Storage } from '@ionic/storage';
+import { Router, NavigationExtras } from '@angular/router';
 import { DataProvider } from '../providers/data';
 
 @Component({
@@ -13,7 +14,7 @@ export class AccountPage implements OnInit {
   public accounts: Array<Account> = [];
   public account;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private router: Router) {
     this.data = new DataProvider(storage);
     this.getDataAccounts();
   }
@@ -40,6 +41,10 @@ export class AccountPage implements OnInit {
         });
       }
     });
+  }
+
+  routeTransaction(id) {
+    this.router.navigate(['account', id]);
   }
 
 
