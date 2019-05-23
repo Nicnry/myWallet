@@ -22,4 +22,19 @@ export class DataProvider {
     return this.storage.get('accounts');
   }
 
+  public getAccount(id): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getAccounts().then((accounts) => {
+        accounts.forEach(account => {
+          if (account.id == id) {
+            resolve(account);
+          }
+        });
+      }).catch( err => {
+        console.log(err);
+        reject(err);
+      });
+    });
+  }
+
 }

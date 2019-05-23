@@ -11,11 +11,10 @@ export class HomePage {
 
   public data: DataProvider;
 
-  constructor(private storage: Storage) {
-    
-  }
+  constructor(private storage: Storage) {}
 
   public setTransaction() {
+    alert('fonction pas encore implémentée.');
     return true;
   }
 
