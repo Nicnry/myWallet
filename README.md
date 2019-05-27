@@ -14,27 +14,43 @@ Enjoy !
 Example JSON format :
 ```json
 {
-  "id": 1,
-  "name": "PostFinance",
-  "favorite": true,
-  "value": 200,
-  "transactions": [
-    "id": 1,
-    "value": -200
-  ],
-  "id": 2,
-  "name": "UBS",
-  "favorite": true,
-  "value": 4200,
-  "transactions": [
-    "id": 1,
-    "value": -200,
-    "id": 2,
-    "value": -500,
-    "id": 3,
-    "value": -100,
-    "id": 4,
-    "value": 50,
-  ],
+  "accounts": [
+    {
+      "id": 1,
+      "name": "PostFinance",
+      "favorite": true,
+      "value": 100,
+      "transactions": [
+        { 
+          "id": 1,
+          "value": -200
+        },
+        { 
+          "id": 2,
+          "value": 300
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "UBS",
+      "favorite": false,
+      "value": 1100,
+      "transactions": [
+        { 
+          "id": 1,
+          "value": -200
+        },
+        { 
+          "id": 2,
+          "value": 300
+        },
+        { 
+          "id": 3,
+          "value": -4000
+        }
+      ]
+    }
+  ]
 }
 ```
