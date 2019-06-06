@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../model/account';
-import { Storage } from '@ionic/storage';
 import { Router, NavigationExtras } from '@angular/router';
 import { DataProvider } from '../providers/data';
 import { Transaction } from '../model/transaction';
@@ -16,9 +15,21 @@ export class AccountPage implements OnInit {
   public account;
   public isFirst;
 
-  constructor(private storage: Storage, private router: Router) {
-    this.data = new DataProvider(storage);
-    this.getDataAccounts();
+  constructor(private router: Router, data: DataProvider) {
+    this.data = data;
+    this.data.getAccounts().then((accounts) => {
+      if (accounts) {
+        accounts['data'].forEach(account => {
+          this.accounts.push({
+            id: account.id,
+            name: account.name,
+            favorite: account.favorite,
+            value: account.value,
+            transactions: account.transactions,
+          });
+        });
+      }
+    });
   }
 
   ngOnInit() {
@@ -27,21 +38,20 @@ export class AccountPage implements OnInit {
   public addAccount() {
     !this.accounts.length ? this.isFirst = 1 : this.isFirst = 2;
     if ( this.account != null ) {
-
-      this.data.setAccount(
-        new Account(
-          this.isFirst,
-          this.account,
-          false,
-          50000,
-          [
-            new Transaction(1, -2000),
-            new Transaction(2, -50),
-            new Transaction(3, -120),
-            new Transaction(3, -120),
-          ],
-        )
+      let account = new Account(
+        this.isFirst,
+        this.account,
+        false,
+        50000,
+        [
+          new Transaction(1, -2000),
+          new Transaction(2, -50),
+          new Transaction(3, -120),
+          new Transaction(3, -120),
+        ],
       );
+
+      this.data.setAccount(account);
 
     } else {
       alert('Veuillez entrez un nom de compte.');

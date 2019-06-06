@@ -24,17 +24,18 @@
     <form (ngSubmit)="setTransaction()">
 
       <ion-item>
-        <ion-label>Dépense</ion-label>
+        <ion-label (click)="showMethod()">Dépense</ion-label>
+        <ion-label>{{picker}}</ion-label>
       </ion-item>
 
       <ion-item>
         <ion-label>Montant</ion-label>
-        <ion-input type="number" value="0"></ion-input>
+        <ion-input [(ngModel)]="value" name="value" type="number" value="0" pattern="[0-9]*" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Compte</ion-label>
-        <ion-input type="text" picker-format=""></ion-input>
+        <ion-label (click)="showAccounts()">Compte</ion-label>
+        <ion-label>{{accountPicker}}</ion-label>
       </ion-item>
 
       <ion-button button expand="block" type="submit">Add Todo</ion-button>
