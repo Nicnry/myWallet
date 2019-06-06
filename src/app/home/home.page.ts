@@ -21,7 +21,6 @@ export class HomePage {
     this.data = data;
     this.ngOnInit();
     this.data.getApiAccounts();
-    console.log(this.data.isOnline());
   }
 
   async showAccounts() {

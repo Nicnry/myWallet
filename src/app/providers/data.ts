@@ -19,21 +19,27 @@ export class DataProvider {
   }
 
   public getApiAccounts(): Observable<any> {
-    this.accounts = [];
+    this.isOnline().then((val) => {
 
-    let call = this.http.get(this.apiUrl + '/accounts');
+      this.accounts = [];
+      let call = this.http.get(this.apiUrl + '/accounts');
 
-    call.subscribe(
-      data => {
-        this.accounts.push.apply(data);
-        this.storage.set('accounts', data);
-        return this.accounts;
-      },
-      err => {
-        console.log(err);
-        return err;
-      }
-    );
+      call.subscribe(
+        data => {
+          this.accounts.push.apply(data);
+          this.storage.set('accounts', data);
+          return this.accounts;
+        },
+        err => {
+          console.log(err);
+          return err;
+        }
+      );
+
+    }).catch(() => {
+      console.log('the DB is offline');
+    });
+
     return;
   }
 
@@ -77,12 +83,10 @@ export class DataProvider {
     return new Promise((resolve, reject) => {
       this.http.get(this.apiUrl + '/accounts').subscribe(
         data => {
-          // return true;
-          // resolve(true);
+          resolve(true);
         },
         err => {
-          // return false;
-          // reject(err.status);
+          reject(false);
         }
       );
     });
