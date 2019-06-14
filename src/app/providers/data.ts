@@ -164,7 +164,7 @@ export class DataProvider {
   /* Set Transactions */
   public setTransaction(transaction): Promise<any> {
     return new Promise((resolve, reject) => {
-      resolve (this.storage.set('transactions', [transaction]));
+      resolve (this.storage.set('transactions', {'data': [transaction]}));
     }).catch( err => {
       console.log(err);
       reject(err);

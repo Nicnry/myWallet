@@ -66,12 +66,17 @@ export class HomePage {
   }
 
   public setTransaction() {
-    console.log(this.selectedAccount.options[this.selectedAccount.selectedIndex].id);
     this.data.getTransactions().then((transactions) => {
-      transactions['data'].forEach((transaction) => {
-        this.transactions.push(transaction)
-      });
+      if (transactions) {
+
+        transactions['data'].forEach((transaction) => {
+          this.transactions.push(transaction)
+        });
+      } else {
+        this.data.setTransaction(new Transaction(1, this.value, this.selectedAccount.options[this.selectedAccount.selectedIndex].id))
+      }
     });
+    console.log(this.transactions);
     this.tutu = {'data': this.transactions};
     console.log(this.tutu);
 
