@@ -16,11 +16,15 @@ export class HomePage {
   public value;
   public account;
   public transaction;
+  public selectedAccount;
+  public transactions: Array<Transaction> = [];
+  public tutu;
 
   constructor(private pickerCtrl: PickerController, data: DataProvider) {
     this.data = data;
     this.ngOnInit();
     this.data.getApiAccounts();
+    this.data.getApiTransactions();
   }
 
   async showAccounts() {
@@ -28,8 +32,9 @@ export class HomePage {
     this.data.getAccounts().then((accounts) => {
       accounts['data'].forEach(element => {
         options.push({
+          id: element.id,
           text: element.name,
-          value: element.name,
+          value: element.value,
         });
       });
     });
@@ -55,19 +60,28 @@ export class HomePage {
     accountPicker.present();
     accountPicker.onDidDismiss().then(async data => {
       let col = await accountPicker.getColumn('picker');
+      this.selectedAccount = await accountPicker.getColumn('picker');
       this.accountPicker = col.options[col.selectedIndex].text;
     });
   }
 
   public setTransaction() {
-    alert('Doesnt work !')
-    this.data.getAccounts().then((accounts) => {
-      accounts.forEach(element => {
-        if (element.name == 'Poste') {
-          this.transaction = new Transaction(element.transactions.length + 1, 200);
-        }
+    console.log(this.selectedAccount.options[this.selectedAccount.selectedIndex].id);
+    this.data.getTransactions().then((transactions) => {
+      transactions['data'].forEach((transaction) => {
+        this.transactions.push(transaction)
       });
     });
+    this.tutu = {'data': this.transactions};
+    console.log(this.tutu);
+
+    /* this.data.getAccounts().then((accounts) => {
+      accounts.forEach(element => {
+        if (element.name == 'Poste') {
+          this.transaction = new Transaction(element.transactions.length + 1, 200, 1);
+        }
+      });
+    }); */
     return true;
   }
 

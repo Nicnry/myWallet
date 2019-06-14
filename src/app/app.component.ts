@@ -19,6 +19,11 @@ export class AppComponent {
       title: 'Comptes',
       url: '/account',
       icon: 'wallet'
+    },
+    {
+      title: 'Settings',
+      url: '/setting',
+      icon: 'options'
     }
   ];
 

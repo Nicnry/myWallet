@@ -13,7 +13,9 @@ export class AccountPage implements OnInit {
   public data: DataProvider;
   public accounts: Array<Account> = [];
   public account;
+  public value;
   public isFirst;
+  public favorite;
 
   constructor(private router: Router, data: DataProvider) {
     this.data = data;
@@ -25,7 +27,6 @@ export class AccountPage implements OnInit {
             name: account.name,
             favorite: account.favorite,
             value: account.value,
-            transactions: account.transactions,
           });
         });
       }
@@ -41,14 +42,8 @@ export class AccountPage implements OnInit {
       let account = new Account(
         this.isFirst,
         this.account,
-        false,
-        50000,
-        [
-          new Transaction(1, -2000),
-          new Transaction(2, -50),
-          new Transaction(3, -120),
-          new Transaction(3, -120),
-        ],
+        this.favorite,
+        this.value
       );
 
       this.data.setAccount(account);
@@ -56,7 +51,7 @@ export class AccountPage implements OnInit {
     } else {
       alert('Veuillez entrez un nom de compte.');
     }
-    this.account = null;
+    this.account = this.value = this.favorite = null;
   }
 
   public getDataAccounts() {
@@ -68,7 +63,6 @@ export class AccountPage implements OnInit {
             name: account.name,
             favorite: account.favorite,
             value: account.value,
-            transactions: account.transactions,
           });
         });
       }

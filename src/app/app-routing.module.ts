@@ -12,6 +12,7 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomePageModule'
   },
   { path: 'account', loadChildren: './account/account.module#AccountPageModule' },
+  { path: 'setting', loadChildren: './setting/setting.module#SettingPageModule' },
 ];
 
 @NgModule({

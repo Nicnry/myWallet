@@ -19,9 +19,27 @@
   </ion-list>
   <form (ngSubmit)="addAccount()">
     <ion-item>
-      <ion-label position="floating">Ajouter</ion-label>
+      <ion-label position="floating">Compte</ion-label>
       <ion-input type="text" [(ngModel)]="account" name="account" required></ion-input>
     </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Solde actuel</ion-label>
+            <ion-input type="number" [(ngModel)]="value" name="value" pattern="[0-9]*" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+              <ion-label position="floating">Compte favori</ion-label>
+              <ion-input type="number" [(ngModel)]="favorite" name="favorite" max="1" pattern="[0-1]*" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
     <ion-button expand="block" color="dark" type="submit" end>Ajouter compte</ion-button>
   </form>
 </ion-content>

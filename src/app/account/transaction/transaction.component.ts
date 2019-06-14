@@ -17,22 +17,25 @@ export class TransactionComponent implements OnInit {
   constructor(private route: ActivatedRoute, data: DataProvider) {
     this.data = data;
     this.getTransactions(this.id);
-
-    this.data.getAccount(this.id).then((account) => {
-      this.solde = account.value;
-    });
-
+    this.getAccount(this.id);
   }
 
   public getTransactions(id): Promise<any> {
-    this.data.getAccounts().then((accounts) => {
-      accounts['data'].forEach(account => {
-        if (account.id == id) {
-          account.transactions.forEach(transaction => {
-            this.transactions.push(transaction);
-          });
+    this.data.getTransactions().then((transactions) => {
+      transactions['data'].forEach(element => {
+        if (element.account_id == this.id) {
+          this.transactions.push(element);
+        } else {
+          this.transactions.push();
         }
       });
+    });
+    return;
+  }
+
+  public getAccount(id): Promise<any>{
+    this.data.getAccount(id).then((account) => {
+      this.solde = account.value;
     });
     return;
   }

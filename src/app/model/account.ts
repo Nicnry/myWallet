@@ -5,14 +5,12 @@ export class Account {
   public name: string;
   public favorite: boolean;
   public value: number;
-  public transactions: Array<Transaction> = [];
 
-  constructor(id, name, favorite, value, transactions) {
+  constructor(id, name, favorite, value) {
     this.id = id;
     this.name = name;
     this.favorite = favorite;
     this.value = value;
-    this.transactions = transactions;
 
   }
 }
