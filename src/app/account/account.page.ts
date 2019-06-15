@@ -46,11 +46,16 @@ export class AccountPage implements OnInit {
         this.value
       );
 
-      this.data.setAccount(account);
+      //this.data.setAccount(account);
 
     } else {
       alert('Veuillez entrez un nom de compte.');
     }
+    this.account = this.value = this.favorite = null;
+  }
+
+  public setAccount() {
+    this.data.setAccount(this.account, this.favorite, this.value);
     this.account = this.value = this.favorite = null;
   }
 

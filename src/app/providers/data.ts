@@ -131,40 +131,62 @@ export class DataProvider {
 
   /* Set methods */
   /* Set Account */
-  public setAccount(account): Promise<any> {
+  public setAccount(name, favorite, value, id = null): Promise<any> {
+    let accounts_array: Array<Account> = [];
+
     return new Promise((resolve, reject) => {
       this.getAccounts().then((accounts) => {
-        if (accounts == null) {
-          accounts = {'data': [account]};
-          resolve (this.storage.set('accounts', accounts));
+
+        if (accounts) {
+          accounts['data'].forEach((account) => {
+            accounts_array.push(account);
+          });
+          id == null ? id = accounts_array.length + 1: id = id;
+          accounts_array.push(new Account(id, name, favorite, value));
+          resolve (this.storage.set('accounts', {'data': accounts_array}));
         } else {
-          accounts['data'].push(account);
-          resolve (this.storage.set('accounts', accounts));
+          resolve (this.storage.set('accounts', {'data': [new Account(1, name, favorite, value)]}));
         }
+
       });
     }).catch( err => {
       reject(err);
     });
-    /* return new Promise((resolve, reject) => {
-      this.getAccounts().then((accounts) => {
-        if (accounts == null) {
-          accounts = [account];
-          resolve (this.storage.set('accounts', accounts));
-        } else {
-          accounts.push(account);
-          resolve (this.storage.set('accounts', accounts));
-        }
-      });
-    }).catch( err => {
-      console.log(err);
-      reject(err);
-    }); */
   }
 
   /* Set Transactions */
-  public setTransaction(transaction): Promise<any> {
+  public setTransaction(value, account_id): Promise<any> {
+    let transactions_array: Array<Transaction> = [];
+    let accounts_array: Array<Account> = [];
+
     return new Promise((resolve, reject) => {
-      resolve (this.storage.set('transactions', {'data': [transaction]}));
+      this.getTransactions().then((transactions) => {
+
+        if (transactions) {
+          transactions['data'].forEach((transaction) => {
+
+            transactions_array.push(transaction);
+          });
+          transactions_array.push(new Transaction(transactions_array.length + 1, value, account_id));
+
+          resolve (this.storage.set('transactions', {'data': transactions_array}));
+        } else {
+          resolve (this.storage.set('transactions', {'data': [new Transaction(1, value, account_id)]}));
+        }
+
+      });
+
+      this.getAccounts().then((accounts) => {
+        accounts['data'].forEach(account => {
+          if (account.id == account_id) {
+            accounts_array.push(new Account(account.id, account.name, account.favorite, parseInt(account.value) + parseInt(value)));
+          } else {
+            accounts_array.push(account);
+          }
+          resolve (this.storage.set('accounts', {'data': accounts_array}));
+        });
+      });
+
     }).catch( err => {
       console.log(err);
       reject(err);

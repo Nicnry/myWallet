@@ -17,8 +17,7 @@ export class HomePage {
   public account;
   public transaction;
   public selectedAccount;
-  public transactions: Array<Transaction> = [];
-  public tutu;
+  public selectedPicker;
 
   constructor(private pickerCtrl: PickerController, data: DataProvider) {
     this.data = data;
@@ -65,32 +64,6 @@ export class HomePage {
     });
   }
 
-  public setTransaction() {
-    this.data.getTransactions().then((transactions) => {
-      if (transactions) {
-
-        transactions['data'].forEach((transaction) => {
-          this.transactions.push(transaction)
-        });
-      } else {
-        this.data.setTransaction(new Transaction(1, this.value, this.selectedAccount.options[this.selectedAccount.selectedIndex].id))
-      }
-    });
-    console.log(this.transactions);
-    this.tutu = {'data': this.transactions};
-    console.log(this.tutu);
-
-    /* this.data.getAccounts().then((accounts) => {
-      accounts.forEach(element => {
-        if (element.name == 'Poste') {
-          this.transaction = new Transaction(element.transactions.length + 1, 200, 1);
-        }
-      });
-    }); */
-    return true;
-  }
-
-
   async showMethod() {
     let opts: PickerOptions = {
       buttons: [
@@ -106,8 +79,8 @@ export class HomePage {
         {
           name: 'picker',
           options: [
-            { text: 'Dépense', value: 'depense' },
-            { text: 'Reçu', value: 'recu' }
+            { text: 'Dépense', value: '-' },
+            { text: 'Reçu', value: '' }
           ]
         }
       ]
@@ -116,9 +89,13 @@ export class HomePage {
     picker.present();
     picker.onDidDismiss().then(async data => {
       let col = await picker.getColumn('picker');
-      console.log(col.selectedIndex);
+      this.selectedPicker = col.options[col.selectedIndex].value;
       this.picker = col.options[col.selectedIndex].text;
     });
+  }
+
+  public setTransaction() {
+    return this.data.setTransaction(this.selectedPicker + this.value, this.selectedAccount.options[this.selectedAccount.selectedIndex].id);
   }
 
   ngOnInit() {}
