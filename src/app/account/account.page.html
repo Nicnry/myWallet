@@ -3,25 +3,38 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title [ngStyle]="{'background-color': color}">
       Comptes
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let account of accounts">
-      <ion-label color="dark" [routerLink]="['/account/', account.id]">{{account.name}}</ion-label>
-      <ion-label color="dark">{{account.value}}</ion-label>
-      <ion-icon *ngIf="!account.favorite" name="star-outline"></ion-icon>
-    </ion-item>
-  </ion-list>
-  <form (ngSubmit)="setAccount()">
-    <ion-item>
-      <ion-label position="floating">Compte</ion-label>
-      <ion-input type="text" [(ngModel)]="account" name="account" required></ion-input>
-    </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-list-header>
+        <ion-col>
+            <ion-label>Compte</ion-label>
+        </ion-col>
+        <ion-col>
+            <ion-label>Solde</ion-label>
+        </ion-col>
+      </ion-list-header>
+    </ion-row>
+  </ion-grid>
+
+    <ion-list>
+      <ion-item *ngFor="let account of accounts" [routerLink]="['/account/', account.id]">
+        <ion-label color="dark">{{account.name}}</ion-label>
+        <ion-label color="{{account.value >= 0 ? 'success' : 'danger'}}">{{account.value}}</ion-label>
+        <ion-icon *ngIf="account.favorite" name="star-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
+    <form (ngSubmit)="setAccount()">
+      <ion-item>
+        <ion-label position="floating">Compte</ion-label>
+        <ion-input type="text" [(ngModel)]="account" name="account" required></ion-input>
+      </ion-item>
 
     <ion-grid>
       <ion-row>
@@ -40,6 +53,6 @@
       </ion-row>
     </ion-grid>
 
-    <ion-button expand="block" color="dark" type="submit" end>Ajouter compte</ion-button>
+    <ion-button expand="block" color="dark" type="submit" end>Nouveau compte</ion-button>
   </form>
 </ion-content>

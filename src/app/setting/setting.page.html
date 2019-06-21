@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title [ngStyle]="{'background-color': color}">
       Settings
     </ion-title>
   </ion-toolbar>
@@ -11,17 +11,17 @@
 <ion-content>
   <form (ngSubmit)="setSettings()">
     <ion-item>
-      <ion-label>API</ion-label>
+      <ion-label [color]="color">API</ion-label>
       <ion-input [(ngModel)]="api" name="api"></ion-input>
     </ion-item>
-    {{val}}
     <ion-item>
       <ion-label>Couleur</ion-label>
-      <ion-input [(ngModel)]="color" name="color" type="color" value="#000000"></ion-input>
+      <ion-input [(ngModel)]="color" name="color" type="color" value="color"></ion-input>
     </ion-item>
 
-    <ion-button button expand="block" type="submit">Add Todo</ion-button>
+    <ion-button button expand="block" type="submit">Mettre à jour</ion-button>
     
   </form>
+  <ion-button button expand="block" (click)="defaultSettings()">Remettre par défaut</ion-button>
 
 </ion-content>

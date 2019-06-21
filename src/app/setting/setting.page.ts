@@ -8,28 +8,31 @@ import { DataProvider } from '../providers/data';
 })
 export class SettingPage implements OnInit {
   public data: DataProvider;
-  public api;
-  public color;
+  public api: string;
+  public color: string;
   public settings = [];
 
   constructor(data: DataProvider) {
     this.data = data;
-    this.setSettings();
     this.getSettings();
   }
 
   ngOnInit() {
   }
 
-  public getSettings(): Promise<any> {
-    this.data.getSettingApi().then(data => this.settings['api'] = data);
-    this.data.getSettingColor().then(data => this.settings['app_color'] = data);
-    console.log(this.settings);
+  public getSettings() {
+    this.data.getSettingApi().then(data => this.api = data);
+    this.data.getSettingColor().then(data => this.color = data);
     return;
   }
 
   public setSettings() {
     this.data.setSettingApi(this.api);
+    this.data.setSettingColor(this.color);
+  }
+
+  public defaultSettings() {
+    this.data.setSettingApi();
     this.data.setSettingColor();
   }
 

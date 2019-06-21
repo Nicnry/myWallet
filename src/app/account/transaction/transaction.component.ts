@@ -10,34 +10,40 @@ import { DataProvider } from 'src/app/providers/data';
 })
 export class TransactionComponent implements OnInit {
   public data: DataProvider;
-  private id = this.route.snapshot.paramMap.get('id');
+  private id = Number(this.route.snapshot.paramMap.get('id'));
   public transactions: Array<Transaction> = [];
   public solde;
+  public account;
+  public color: string;
 
   constructor(private route: ActivatedRoute, data: DataProvider) {
     this.data = data;
     this.getTransactions(this.id);
     this.getAccount(this.id);
+    this.getSettingColor();
   }
 
-  public getTransactions(id): Promise<any> {
+  public getTransactions(id: number) {
     this.data.getTransactions().then((transactions) => {
       transactions['data'].forEach(element => {
         if (element.account_id == this.id) {
-          this.transactions.push(element);
+          this.transactions.unshift(element);
         } else {
-          this.transactions.push();
+          this.transactions.unshift();
         }
       });
     });
-    return;
   }
 
-  public getAccount(id): Promise<any>{
+  public getAccount(id: number) {
     this.data.getAccount(id).then((account) => {
+      this.account = account.name;
       this.solde = account.value;
     });
-    return;
+  }
+
+  public getSettingColor() {
+    this.data.getSettingColor().then(data => this.color = data);
   }
 
   ngOnInit() {}

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { DataProvider } from './providers/data';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -26,13 +28,19 @@ export class AppComponent {
       icon: 'options'
     }
   ];
+  public online;
 
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public data: DataProvider,
+    private toastCtrl: ToastController,
   ) {
     this.initializeApp();
+    this.data = data;
+    this.toastCtrl = toastCtrl;
+    this.api();
   }
 
   initializeApp() {
@@ -41,4 +49,22 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
+
+  async api() {
+    setInterval(() => {
+      this.data.api().then(async (val) => {
+        this.online = val;
+
+        /* const toast = await this.toastCtrl.create({
+          message: "Tout a été enregistré sur l'API",
+          duration: 2000,
+          color: 'dark'
+        });
+        toast.present(); */
+
+      });
+    },
+    5000);
+  }
+
 }

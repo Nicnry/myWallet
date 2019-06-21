@@ -2,9 +2,11 @@ import { Storage } from '@ionic/storage';
 import { Account } from '../model/account';
 import { Transaction } from '../model/transaction';
 import { reject } from 'q';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
+import { TouchID } from '@ionic-native/touch-id/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Injectable()
 export class DataProvider {
@@ -15,36 +17,49 @@ export class DataProvider {
   private http: HttpClient;
   private internet: boolean;
 
-  constructor(storage: Storage, http: HttpClient) {
+  constructor(storage: Storage, http: HttpClient, private touchId: TouchID, public toastController: ToastController) {
     this.storage = storage;
     this.http = http;
+    this.touchId.isAvailable()
+    .then(
+      res => console.log('TouchID is available!'),
+      err => console.error('TouchID is not available', err)
+    );
+
+    this.touchId.verifyFingerprint('Scan your fingerprint please')
+      .then(
+        res => console.log('Ok', res),
+        err => console.error('Error', err)
+      );
   }
 
   /* Get methods */
   /* Get Accounts */
-  public getApiAccounts(): Observable<any> {
-    this.isOnline().then((val) => {
-
-      this.accounts = [];
-      let call = this.http.get(this.apiUrl+ '/accounts');
-
-      call.subscribe(
-        data => {
-          this.accounts.push.apply(data);
-          this.storage.set('accounts', data);
-          return this.accounts;
-        },
-        err => {
-          console.log(err);
-          return err;
-        }
-      );
+  public getApiAccounts() {
+    this.getOnline().then((val) => {
+      if ( val == true ) {
+  
+        this.accounts = [];
+        let call = this.http.get(this.apiUrl + '/accounts');
+  
+        call.subscribe(
+          data => {
+            this.accounts.push.apply(data);
+            this.storage.set('accounts', data);
+            return this.accounts;
+          },
+          err => {
+            console.log(err);
+            return err;
+          }
+        );
+      } else {
+        this.presentToast('Vous êtes hors ligne, les données en lignes ne sont pas téléchargées');
+      }
 
     }).catch(() => {
       this.getAccounts();
     });
-
-    return;
   }
 
   public getAccounts(): Promise<any> {
@@ -63,13 +78,9 @@ export class DataProvider {
   public getAccount(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getAccounts().then((accounts) => {
-        accounts['data'].forEach(account => {
-          if (account.id == id) {
-            resolve(account);
-          }
-        });
+        resolve(accounts['data'].filter(account => account.id == id)[0]);
       }).catch( err => {
-        console.log(err);
+        console.error(err);
         reject(err);
       });
     });
@@ -108,11 +119,7 @@ export class DataProvider {
   public getTransaction(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getTransactions().then((transactions) => {
-        transactions.forEach(transaction => {
-          if (transaction.id == id) {
-            resolve(transaction);
-          }
-        });
+        resolve(transactions['data'].filter(transaction => transaction.id == id)[0]);
       }).catch( err => {
         console.log(err);
         reject(err);
@@ -154,6 +161,17 @@ export class DataProvider {
     });
   }
 
+  setApiAccount(name, favorite, value): Observable<Account> {
+    let account = new Account(null, name, favorite, value);
+    this.http.post<Account>('http://localhost:8000/api/nhy/accounts', account).subscribe(data => {
+      this.presentToast('données enregistré avec succès !');
+    }, error => {
+      this.setAccount(name, favorite, value);
+      this.presentToast('Vos données n\'ont pas étée synchronisées avec le serveur.');
+    });
+    return;
+  }
+
   /* Set Transactions */
   public setTransaction(value, account_id): Promise<any> {
     let transactions_array: Array<Transaction> = [];
@@ -192,7 +210,17 @@ export class DataProvider {
       reject(err);
     });
   }
-
+  
+  setApiTransaction(value, account_id): Observable<Account> {
+    let transaction = new Transaction(null, value, account_id);
+    this.http.post<Account>('http://localhost:8000/api/nhy/transactions', transaction).subscribe(data => {
+      this.presentToast('données enregistré avec succès !');
+    }, error => {
+      this.setTransaction(value, account_id);
+      this.presentToast('Vos données n\'ont pas étée synchronisées avec le serveur.');
+    });
+    return;
+  }
   /* set Settings */
   public setSettingApi(api = this.apiUrl + '/accounts'): Promise<any> {
     return this.storage.set('api', api);
@@ -221,6 +249,10 @@ export class DataProvider {
     });
   }
 
+  public async getOnline() {
+    return this.storage.get('online');
+  }
+
   /* Check if it's the first time we launch the app */
   public isFirstLaunch() {
     return new Promise((resolve, reject) => {
@@ -235,6 +267,25 @@ export class DataProvider {
       console.log(err);
       reject(err);
     });
+  }
+
+  public api() {
+    return new Promise((resolve, reject) => {
+      this.storage.get('online').then(online => {
+        resolve(online);
+      });
+    }).catch( err => {
+      console.log(err);
+      reject(err);
+    });
+  }
+
+  async presentToast(message, duration = 2000) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: duration
+    });
+    toast.present();
   }
 
 }

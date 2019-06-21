@@ -18,12 +18,14 @@ export class HomePage {
   public transaction;
   public selectedAccount;
   public selectedPicker;
+  public color: string;
 
   constructor(private pickerCtrl: PickerController, data: DataProvider) {
     this.data = data;
     this.ngOnInit();
     this.data.getApiAccounts();
     this.data.getApiTransactions();
+    this.getSettingColor();
   }
 
   async showAccounts() {
@@ -95,7 +97,12 @@ export class HomePage {
   }
 
   public setTransaction() {
-    return this.data.setTransaction(this.selectedPicker + this.value, this.selectedAccount.options[this.selectedAccount.selectedIndex].id);
+    this.data.setApiTransaction(this.selectedPicker + this.value, this.selectedAccount.options[this.selectedAccount.selectedIndex].id);
+    this.accountPicker = this.picker = this.value = null;
+  }
+
+  public getSettingColor() {
+    this.data.getSettingColor().then(data => this.color = data);
   }
 
   ngOnInit() {}

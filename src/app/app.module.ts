@@ -11,6 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { DataProvider } from './providers/data';
+import { TouchID } from '@ionic-native/touch-id/ngx';
+/* import { IonicAngularThemeSwitchSelectModule } from 'ionic-angular-theme-switch'; */
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,13 +22,15 @@ import { DataProvider } from './providers/data';
     HttpClientModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    /* IonicAngularThemeSwitchSelectModule.forRoot(), */
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     DataProvider,
+    TouchID,
   ],
   bootstrap: [AppComponent]
 })

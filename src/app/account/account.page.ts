@@ -16,6 +16,7 @@ export class AccountPage implements OnInit {
   public value;
   public isFirst;
   public favorite;
+  public color: string;
 
   constructor(private router: Router, data: DataProvider) {
     this.data = data;
@@ -31,12 +32,14 @@ export class AccountPage implements OnInit {
         });
       }
     });
+
+    this.getSettingColor();
   }
 
   ngOnInit() {
   }
 
-  public addAccount() {
+  /* public addAccount() {
     !this.accounts.length ? this.isFirst = 1 : this.isFirst = 2;
     if ( this.account != null ) {
       let account = new Account(
@@ -52,10 +55,10 @@ export class AccountPage implements OnInit {
       alert('Veuillez entrez un nom de compte.');
     }
     this.account = this.value = this.favorite = null;
-  }
+  } */
 
   public setAccount() {
-    this.data.setAccount(this.account, this.favorite, this.value);
+    this.data.setApiAccount(this.account, this.favorite, this.value);
     this.account = this.value = this.favorite = null;
   }
 
@@ -72,6 +75,10 @@ export class AccountPage implements OnInit {
         });
       }
     });
+  }
+
+  public getSettingColor() {
+    this.data.getSettingColor().then(data => this.color = data);
   }
 
   routeTransaction(id) {

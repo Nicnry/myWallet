@@ -3,8 +3,8 @@
     <ion-buttons slot="start">
         <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>
-      ID of account : {{id}}
+    <ion-title [ngStyle]="{'background-color': color}">
+      Compte : {{this.account}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,12 +12,12 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let transaction of transactions">
-      <ion-label color="dark">{{transaction['id']}}</ion-label>
-      <ion-label color="{{transaction['value'] >= 0 ? 'success' : 'danger'}}">Transaction : {{transaction['value']}}</ion-label>
+      <ion-label color="dark">Transaction : </ion-label>
+      <ion-label color="{{transaction['value'] >= 0 ? 'success' : 'danger'}}">{{transaction['value']}}</ion-label>
     </ion-item>
     <ion-item>
         <ion-label color="dark">Solde :</ion-label>
-        <ion-label color="dark">{{this.solde}}</ion-label>
+        <ion-label color="{{this.solde >= 0 ? 'success' : 'danger'}}">{{this.solde}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>
