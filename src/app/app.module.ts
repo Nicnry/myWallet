@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataProvider } from './providers/data';
 import { TouchID } from '@ionic-native/touch-id/ngx';
 /* import { IonicAngularThemeSwitchSelectModule } from 'ionic-angular-theme-switch'; */
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +33,7 @@ import { TouchID } from '@ionic-native/touch-id/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     DataProvider,
     TouchID,
+    BarcodeScanner,
   ],
   bootstrap: [AppComponent]
 })

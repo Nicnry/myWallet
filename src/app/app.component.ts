@@ -29,6 +29,7 @@ export class AppComponent {
     }
   ];
   public online;
+  public user: string;
 
   constructor(
     private platform: Platform,
@@ -41,6 +42,7 @@ export class AppComponent {
     this.data = data;
     this.toastCtrl = toastCtrl;
     this.api();
+    this.getUser();
   }
 
   initializeApp() {
@@ -54,17 +56,25 @@ export class AppComponent {
     setInterval(() => {
       this.data.api().then(async (val) => {
         this.online = val;
-
-        /* const toast = await this.toastCtrl.create({
-          message: "Tout a été enregistré sur l'API",
-          duration: 2000,
-          color: 'dark'
-        });
-        toast.present(); */
-
       });
     },
     5000);
+  }
+
+  async getUser() {
+    this.data.getUser().then((user) => {
+      this.user = user;
+    });
+  }
+
+  scanCode(){
+    this.data.barcodeScanner.scan().then(barcodeData => {
+      this.data.setUser(barcodeData.text).then((user) => {
+        this.user = user;
+      });
+     }).catch(err => {
+         alert('Votre appareil ne fonctionne pas correctement');
+     });
   }
 
 }

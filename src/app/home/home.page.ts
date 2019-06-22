@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DataProvider } from '../providers/data';
-import { Transaction } from '../model/transaction';
 import { PickerController } from '@ionic/angular';
 import { PickerOptions } from '@ionic/core';
 
@@ -19,6 +18,7 @@ export class HomePage {
   public selectedAccount;
   public selectedPicker;
   public color: string;
+  public user: string;
 
   constructor(private pickerCtrl: PickerController, data: DataProvider) {
     this.data = data;
@@ -26,6 +26,13 @@ export class HomePage {
     this.data.getApiAccounts();
     this.data.getApiTransactions();
     this.getSettingColor();
+    this.getUser();
+  }
+
+  getUser() {
+    this.data.getUser().then((user) => {
+      this.user = user;
+    });
   }
 
   async showAccounts() {

@@ -20,9 +20,20 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+          <ion-item>
+            <ion-icon slot="start" name="contact"></ion-icon>
+            <ion-label (click)="scanCode()">
+              Changer d'utilisateur
+            </ion-label>
+          </ion-item>
           
         </ion-list>
       </ion-content>
+      <ion-footer *ngIf="user">
+        <ion-toolbar>
+          <ion-title>User : {{user}}</ion-title>
+        </ion-toolbar>
+      </ion-footer>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
   </ion-split-pane>

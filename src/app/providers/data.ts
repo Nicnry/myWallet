@@ -5,8 +5,8 @@ import { reject } from 'q';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
-import { TouchID } from '@ionic-native/touch-id/ngx';
 import { ToastController } from '@ionic/angular';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @Injectable()
 export class DataProvider {
@@ -16,21 +16,13 @@ export class DataProvider {
   private storage: Storage;
   private http: HttpClient;
   private internet: boolean;
+  public user: string;
+  public barcodeScanner: BarcodeScanner
 
-  constructor(storage: Storage, http: HttpClient, private touchId: TouchID, public toastController: ToastController) {
+  constructor(storage: Storage, http: HttpClient, public toastController: ToastController, barcodeScanner: BarcodeScanner) {
     this.storage = storage;
     this.http = http;
-    this.touchId.isAvailable()
-    .then(
-      res => console.log('TouchID is available!'),
-      err => console.error('TouchID is not available', err)
-    );
-
-    this.touchId.verifyFingerprint('Scan your fingerprint please')
-      .then(
-        res => console.log('Ok', res),
-        err => console.error('Error', err)
-      );
+    this.barcodeScanner = barcodeScanner;
   }
 
   /* Get methods */
@@ -228,6 +220,14 @@ export class DataProvider {
 
   public setSettingColor(color = '#ffffff'): Promise<any> {
     return this.storage.set('app_color', color);
+  }
+
+  setUser(user) {
+    return this.storage.set('user', user);
+  }
+
+  getUser() {
+    return this.storage.get('user');
   }
 
   /* check if is online */
