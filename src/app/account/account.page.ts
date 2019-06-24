@@ -12,10 +12,10 @@ import { Transaction } from '../model/transaction';
 export class AccountPage implements OnInit {
   public data: DataProvider;
   public accounts: Array<Account> = [];
-  public account;
-  public value;
-  public isFirst;
-  public favorite;
+  public account: any;
+  public value: any;
+  public isFirst: any;
+  public favorite: any;
   public color: string;
 
   constructor(private router: Router, data: DataProvider) {

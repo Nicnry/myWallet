@@ -13,8 +13,8 @@ export class TransactionComponent implements OnInit {
   public data: DataProvider;
   private id = Number(this.route.snapshot.paramMap.get('id'));
   public transactions: Array<Transaction> = [];
-  public solde;
-  public account;
+  public solde: any;
+  public account: any;
   public color: string;
   public changes: Array<Change> = [];
 

@@ -13,12 +13,12 @@ export class HomePage {
   changePicker = '';
   picker = '';
   public data: DataProvider;
-  public value;
-  public account;
-  public transaction;
-  public selectedAccount;
-  public selectedChange;
-  public selectedPicker;
+  public value: any;
+  public account: any;
+  public transaction: any;
+  public selectedAccount: any;
+  public selectedChange: any;
+  public selectedPicker: any;
   public color: string;
   public user: string;
 
