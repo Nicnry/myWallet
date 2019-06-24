@@ -10,11 +10,12 @@ import { Change } from '../model/change';
 })
 export class ChangePage implements OnInit {
   public data: DataProvider;
-  public change: Array<Change> = [];
+  public changes: Array<Change> = [];
 
   constructor(data: DataProvider) {
     this.data = data;
     this.setChanges();
+    this.getChanges();
   }
 
   public setChanges() {
@@ -25,6 +26,16 @@ export class ChangePage implements OnInit {
     changes.push(new Change(3, 'euro', 'EUR', 1.11));
 
     return this.data.setChange(changes);
+  }
+
+  public getChanges() {
+    this.data.getChanges().then((changes) => {
+      if (changes) {
+        changes['data'].forEach(change => {
+          this.changes.push(change);
+        });
+      }
+    })
   }
 
   ngOnInit() {

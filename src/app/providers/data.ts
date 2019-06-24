@@ -129,6 +129,10 @@ export class DataProvider {
     return this.storage.get('app_color');
   }
 
+  public getChanges(): Promise<Change> {
+    return this.storage.get('changes');
+  }
+
   /* Set methods */
   /* Set Account */
   public setAccount(name, favorite, value, id = null): Promise<any> {
@@ -163,6 +167,11 @@ export class DataProvider {
       this.presentToast('Vos données n\'ont pas étée synchronisées avec le serveur.');
     });
     return;
+  }
+
+  /* Set Changes */
+  public async setChange(change) {
+    return this.storage.set('changes', {'data': change});
   }
 
   /* Set Transactions */
@@ -252,10 +261,6 @@ export class DataProvider {
 
   public async getOnline() {
     return this.storage.get('online');
-  }
-
-  public async setChange(change) {
-    return this.storage.set('changes', {'data': change});
   }
 
   /* Check if it's the first time we launch the app */

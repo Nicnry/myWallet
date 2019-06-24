@@ -10,5 +10,28 @@
 </ion-header>
 
 <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-list-header>
+          <ion-col>
+            <ion-label>Monnaie</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-label>Symbole</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-label>Valeur</ion-label>
+          </ion-col>
+        </ion-list-header>
+      </ion-row>
+    </ion-grid>
+      
+    <ion-list>
+      <ion-item *ngFor="let change of changes">
+        <ion-label color="dark">{{change.name}}</ion-label>
+        <ion-label color="dark">{{change.slug}}</ion-label>
+        <ion-label>{{change.value}}</ion-label>
+      </ion-item>
+    </ion-list>
 
 </ion-content>
