@@ -23,6 +23,11 @@ export class AppComponent {
       icon: 'wallet'
     },
     {
+      title: 'Monnaies',
+      url: '/change',
+      icon: 'card'
+    },
+    {
       title: 'Settings',
       url: '/setting',
       icon: 'options'

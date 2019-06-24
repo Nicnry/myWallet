@@ -13,6 +13,7 @@ const routes: Routes = [
   },
   { path: 'account', loadChildren: './account/account.module#AccountPageModule' },
   { path: 'setting', loadChildren: './setting/setting.module#SettingPageModule' },
+  { path: 'change', loadChildren: './change/change.module#ChangePageModule' },
 ];
 
 @NgModule({
