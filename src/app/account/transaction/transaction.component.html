@@ -14,6 +14,7 @@
     <ion-item *ngFor="let transaction of transactions">
       <ion-label color="dark">Transaction : </ion-label>
       <ion-label color="{{transaction['value'] >= 0 ? 'success' : 'danger'}}">{{transaction['value']}}</ion-label>
+      <ion-label color="dark">{{transaction['change_id']}}</ion-label>
     </ion-item>
     <ion-item>
         <ion-label color="dark">Solde :</ion-label>

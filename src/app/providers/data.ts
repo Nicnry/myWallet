@@ -18,7 +18,8 @@ export class DataProvider {
   private http: HttpClient;
   private internet: boolean;
   public user: string;
-  public barcodeScanner: BarcodeScanner
+  public barcodeScanner: BarcodeScanner;
+  public change_value: number;
 
   constructor(storage: Storage, http: HttpClient, public toastController: ToastController, barcodeScanner: BarcodeScanner) {
     this.storage = storage;
@@ -175,7 +176,7 @@ export class DataProvider {
   }
 
   /* Set Transactions */
-  public setTransaction(value, account_id): Promise<any> {
+  public async setTransaction(value, change_id , account_id): Promise<any> {
     let transactions_array: Array<Transaction> = [];
     let accounts_array: Array<Account> = [];
 
@@ -187,23 +188,26 @@ export class DataProvider {
 
             transactions_array.push(transaction);
           });
-          transactions_array.push(new Transaction(transactions_array.length + 1, value, account_id));
+          transactions_array.push(new Transaction(transactions_array.length + 1, value, change_id, account_id));
 
           resolve (this.storage.set('transactions', {'data': transactions_array}));
         } else {
-          resolve (this.storage.set('transactions', {'data': [new Transaction(1, value, account_id)]}));
+          resolve (this.storage.set('transactions', {'data': [new Transaction(1, value, change_id, account_id)]}));
         }
 
       });
-
-      this.getAccounts().then((accounts) => {
-        accounts['data'].forEach(account => {
-          if (account.id == account_id) {
-            accounts_array.push(new Account(account.id, account.name, account.favorite, parseInt(account.value) + parseInt(value)));
-          } else {
-            accounts_array.push(account);
-          }
-          resolve (this.storage.set('accounts', {'data': accounts_array}));
+      this.getChanges().then((changes) => {
+        let change_value = changes['data'].filter(change => change.id == change_id)[0].value;
+        value = value * change_value;
+        this.getAccounts().then((accounts) => {
+          accounts['data'].forEach(account => {
+            if (account.id == account_id) {
+              accounts_array.push(new Account(account.id, account.name, account.favorite, parseInt(account.value) + parseInt(value)));
+            } else {
+              accounts_array.push(account);
+            }
+            resolve (this.storage.set('accounts', {'data': accounts_array}));
+          });
         });
       });
 
@@ -213,12 +217,12 @@ export class DataProvider {
     });
   }
   
-  setApiTransaction(value, account_id): Observable<Account> {
-    let transaction = new Transaction(null, value, account_id);
+  setApiTransaction(value, change_id, account_id): Observable<Account> {
+    let transaction = new Transaction(null, value, 1, account_id);
     this.http.post<Account>('http://localhost:8000/api/nhy/transactions', transaction).subscribe(data => {
       this.presentToast('données enregistré avec succès !');
     }, error => {
-      this.setTransaction(value, account_id);
+      this.setTransaction(value, change_id , account_id);
       this.presentToast('Vos données n\'ont pas étée synchronisées avec le serveur.');
     });
     return;

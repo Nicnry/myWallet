@@ -33,6 +33,11 @@
         <ion-input [(ngModel)]="value" name="value" type="number" value="" pattern="[0-9]*" required></ion-input>
       </ion-item>
 
+      <ion-item (click)="showChanges()">
+          <ion-label>Monnaie</ion-label>
+          <ion-label>{{changePicker}}</ion-label>
+        </ion-item>
+
       <ion-item (click)="showAccounts()">
         <ion-label>Compte</ion-label>
         <ion-label>{{accountPicker}}</ion-label>
