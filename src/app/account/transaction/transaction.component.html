@@ -14,11 +14,14 @@
     <ion-item *ngFor="let transaction of transactions">
       <ion-label color="dark">Transaction : </ion-label>
       <ion-label color="{{transaction['value'] >= 0 ? 'success' : 'danger'}}">{{transaction['value']}}</ion-label>
-      <ion-label color="dark">{{transaction['change_id']}}</ion-label>
+      <div *ngFor="let change of changes">
+
+        <ion-label *ngIf="transaction['change_id'] == change.id" color="dark"><div></div>{{change.slug}}</ion-label>
+      </div>
     </ion-item>
     <ion-item>
         <ion-label color="dark">Solde :</ion-label>
-        <ion-label color="{{this.solde >= 0 ? 'success' : 'danger'}}">{{this.solde}}</ion-label>
+        <ion-label color="{{this.solde >= 0 ? 'success' : 'danger'}}">{{this.solde}} CHF</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

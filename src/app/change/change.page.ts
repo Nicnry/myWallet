@@ -11,21 +11,18 @@ import { Change } from '../model/change';
 export class ChangePage implements OnInit {
   public data: DataProvider;
   public changes: Array<Change> = [];
+  public change: string;
+  public slug: string;
+  public value: number;
 
   constructor(data: DataProvider) {
     this.data = data;
-    this.setChanges();
     this.getChanges();
   }
 
-  public setChanges() {
-    let changes: Array<Change> = [];
-
-    changes.push(new Change(1, 'franc suisse', 'CHF', 1));
-    changes.push(new Change(2, 'dollar', 'USD', 0.98));
-    changes.push(new Change(3, 'euro', 'EUR', 1.11));
-
-    return this.data.setChange(changes);
+  public setChange() {
+    this.data.setChange(this.change, this.slug, this.value);
+    this.change = this.value = this.slug = null;
   }
 
   public getChanges() {

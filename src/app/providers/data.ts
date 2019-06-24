@@ -171,8 +171,24 @@ export class DataProvider {
   }
 
   /* Set Changes */
-  public async setChange(change) {
-    return this.storage.set('changes', {'data': change});
+  public setChange(name, slug, value, id = null) {
+    let changes_array: Array<Change> = [];
+    return new Promise((resolve, reject) => {
+      this.getChanges().then((changes) => {
+        if (changes) {
+          changes['data'].forEach(change => {
+            changes_array.push(change);
+          });
+          id == null ? id = changes_array.length + 1 : id = id;
+          changes_array.push(new Change(id, name, slug, value));
+          resolve (this.storage.set('changes', {'data': changes_array}));
+        } else {
+          resolve (this.storage.set('changes', {'data': [new Change(1, name, slug, value)]}));
+        }
+      });
+    }).catch( err => {
+      reject(err);
+    });
   }
 
   /* Set Transactions */
@@ -198,7 +214,10 @@ export class DataProvider {
       });
       this.getChanges().then((changes) => {
         let change_value = changes['data'].filter(change => change.id == change_id)[0].value;
+        
+        /* Convert with change value */
         value = value * change_value;
+
         this.getAccounts().then((accounts) => {
           accounts['data'].forEach(account => {
             if (account.id == account_id) {

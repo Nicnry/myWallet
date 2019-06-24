@@ -33,5 +33,30 @@
         <ion-label>{{change.value}}</ion-label>
       </ion-item>
     </ion-list>
+    <form (ngSubmit)="setChange()">
+      <ion-item>
+        <ion-label position="floating">Monnaie</ion-label>
+        <ion-input type="text" [(ngModel)]="change" name="change" required></ion-input>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="floating">Symbole monnaie</ion-label>
+              <ion-input type="text" [(ngModel)]="slug" name="slug" required></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+                <ion-label position="floating">valeur</ion-label>
+                <ion-input type="number" [(ngModel)]="value" name="value"pattern="[0-1]*" required></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-button expand="block" color="dark" type="submit" end>Nouvelle monnaie</ion-button>
+    </form>
 
 </ion-content>
