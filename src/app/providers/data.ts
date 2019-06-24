@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Change } from '../model/change';
 
 @Injectable()
 export class DataProvider {
@@ -251,6 +252,10 @@ export class DataProvider {
 
   public async getOnline() {
     return this.storage.get('online');
+  }
+
+  public async setChange(change) {
+    return this.storage.set('changes', {'data': change});
   }
 
   /* Check if it's the first time we launch the app */

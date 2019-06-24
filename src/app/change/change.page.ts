@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DataProvider } from '../providers/data';
+import { Transaction } from '../model/transaction';
+import { Change } from '../model/change';
 
 @Component({
   selector: 'app-change',
@@ -6,8 +9,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./change.page.scss'],
 })
 export class ChangePage implements OnInit {
+  public data: DataProvider;
+  public change: Array<Change> = [];
 
-  constructor() { }
+  constructor(data: DataProvider) {
+    this.data = data;
+    this.setChanges();
+  }
+
+  public setChanges() {
+    let changes: Array<Change> = [];
+
+    changes.push(new Change(1, 'franc suisse', 'CHF', 1));
+    changes.push(new Change(2, 'dollar', 'USD', 0.98));
+    changes.push(new Change(3, 'euro', 'EUR', 1.11));
+
+    return this.data.setChange(changes);
+  }
 
   ngOnInit() {
   }
